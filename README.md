@@ -1,66 +1,172 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Gherkin-Style User Story Generator (PHP/Laravel Edition)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This Laravel command line application helps in converting non-technical user feature requests into detailed Gherkin-style user stories. It uses AI chatbot models to break down natural language feature requests into structured user stories in Gherkin syntax.
 
-## About Laravel
+## Installation
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+To run this script, ensure that PHP and Composer are installed on your machine along with other Laravel dependencies.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. **Clone the Repository:**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+    ```
+git clone https://github.com/russsseeelll/gherkinizer.git
+cd gherkinizer
+    ```
 
-## Learning Laravel
+2. **Install Dependencies:**
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+This application requires several PHP libraries which can be installed using Composer.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+    ```
+composer install
+    ```
+3. **Environment Setup:**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Copy the example environment file and open the .env file to add your AI provider's API key.
 
-## Laravel Sponsors
+    ```
+cp .env.example .env
+    ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Configuration
 
-### Premium Partners
+Before running the command, ensure the AI chatbot model is set correctly in your service provider configuration. Ensure the API key is set in the Env if required.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## Usage
+
+To use this script:
+
+1. **Run the Script:**
+
+    ```
+php artisan app:gherkinize
+    ```
+
+2. **Enter a Feature Request:**
+
+    When prompted, enter the non-IT user feature request. The script will then output the initial thoughts and the Gherkin-style user stories.
+
+3. **User Stories Output:**
+
+The generated user stories will be displayed in the console and saved to a markdown file named with the current date and time (e.g., user_stories_2024_01_01_12_00_00.md).
+
+## Features
+
+- Supports multiple AI chatbot models.
+- Converts natural language feature requests into Gherkin-style user stories.
+- Saves user stories in a markdown file for easy access and documentation.
+
+## Example
+
+**User request**
+> I would like to add a new import to our Student Project web app.  It should let me upload an Excel file containing a project ID and a second supervisor GUID. Once uploaded I should be able to see the second supervisor listed in a table alongside the project and primary supervisor.  When students log in they should be able to see the second supervisor in brackets next to the primary supervisor for each project they can see.
+
+**Result**
+```
+**Initial Thoughts:**
+Certainly! Let's break down your feature request for the Student Project web app into individual components and considerations:
+
+1. **Excel File Upload Functionality:**
+   - A new interface element for users to upload Excel files.
+   - File type and format validation to ensure the uploaded file is indeed an Excel file (.xls, .xlsx).
+   - Size limitation checks to prevent very large files from being uploaded.
+   - Security measures to scan for potentially malicious files.
+
+2. **Data Extraction from Excel:**
+   - Parsing the Excel file to read the contents.
+   - Identifying and extracting the relevant columns: Project ID and Second Supervisor GUID.
+   - Handling different Excel versions and formats to ensure compatibility.
+   - Data validation to ensure that the Project ID and Second Supervisor GUID are in the correct format and are valid entries within the system's context.
+
+3. **Database Integration:**
+   - Updating the database schema if necessary to accommodate the second supervisor information.
+   - Writing the logic to insert or update the second supervisor's details in the database based on the Project ID.
+   - Handling cases where the Project ID does not exist or is incorrect.
+   - Ensuring data integrity and preventing duplication of entries.
+
+4. **User Interface Updates for Admin View:**
+   - Modifying the admin view to include a new column or section in the existing table to display the second supervisor's information.
+   - Ensuring that the display of the second supervisor is clear and distinguishable from the primary supervisor.
+   - Providing feedback to the user after the upload process is complete, such as success or error messages.
+
+5. **User Interface Updates for Student View:**
+   - Adjusting the student view to show the second supervisor in brackets next to the primary supervisor.
+   - Ensuring this information is displayed in a user-friendly manner.
+   - Making sure that the additional information does not clutter the interface or overwhelm the student users.
+
+6. **Access Control and Permissions:**
+   - Confirming that only authorized users (e.g., admins or staff) can upload and modify the second supervisor information.
+   - Ensuring that students have read-only access to this information and cannot alter it.
+
+7. **Error Handling and Edge Cases:**
+   - Providing meaningful error messages for various failure scenarios (e.g., upload failure, incorrect data format, invalid Project ID).
+   - Handling edge cases such as multiple entries for the same Project ID with different second supervisors.
+   - Deciding on the behavior if a second supervisor GUID does not match any existing user in the system.
+
+8. **Testing and Validation:**
+   - Creating test cases to cover the happy path as well as the edge cases and error conditions.
+   - Testing the feature across different browsers and devices to ensure compatibility.
+
+9. **Documentation and User Help:**
+   - Updating any existing documentation to include the new feature.
+   - Providing instructions or a help section for users to understand how to use the new import functionality.
+
+10. **Feedback Mechanism:**
+    - Implementing a way for users to report issues or provide feedback on the new feature.
+
+By considering these components and conditions, the development team can ensure a comprehensive approach to implementing the feature, which can then be translated into user stories for development.
+
+**User Stories:**
+# Feature: Import Second Supervisor Information
+
+## Scenario: Admin successfully uploads a valid Excel file with second supervisor data
+- Given I am logged in as an admin
+- And I am on the 'Import Second Supervisor' page
+- When I select a valid Excel file with project ID and second supervisor GUID
+- And I click the 'Upload' button
+- Then the file should be processed without errors
+- And I should see a success message 'File uploaded successfully.'
+- And the second supervisor should be listed alongside the project and primary supervisor in the admin table
+
+## Scenario: Admin attempts to upload an invalid file type
+- Given I am logged in as an admin
+- And I am on the 'Import Second Supervisor' page
+- When I select a file that is not an Excel file
+- And I click the 'Upload' button
+- Then I should see an error message 'Invalid file type. Please upload an Excel file.'
+
+## Scenario: Admin attempts to upload an Excel file with incorrect column structure
+- Given I am logged in as an admin
+- And I am on the 'Import Second Supervisor' page
+- When I select an Excel file with incorrect columns
+- And I click the 'Upload' button
+- Then I should see an error message 'Incorrect Excel format. Please ensure the file has the required columns.'
+
+## Scenario: Admin uploads an Excel file with an invalid Project ID
+- Given I am logged in as an admin
+- And I am on the 'Import Second Supervisor' page
+- When I select an Excel file with an invalid Project ID
+- And I click the 'Upload' button
+- Then I should see an error message 'Invalid Project ID(s) found. Please correct the data and try again.'
+
+## Scenario: Admin uploads an Excel file with a non-existent second supervisor GUID
+- Given I am logged in as an admin
+- And I am on the 'Import Second Supervisor' page
+- When I select an Excel file with a non-existent second supervisor GUID
+- And I click the 'Upload' button
+- Then I should see an error message 'Second supervisor GUID not found in the system. Please check the GUID(s) and try again.'
+
+## Scenario: Student views project with primary and second supervisor listed
+- Given I am logged in as a student
+- And I am on the 'Available Projects' page
+- When I look at the list of projects
+- Then I should see the second supervisor's name in brackets next to the primary supervisor's name for each project
+```
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+If you'd like to contribute to the project, please fork the repository and use a feature branch. Pull requests are warmly welcome.
 
-## Code of Conduct
+## Licensing
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT License.
