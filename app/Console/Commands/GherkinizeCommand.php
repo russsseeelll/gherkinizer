@@ -28,14 +28,16 @@ class GherkinizeCommand extends Command
         $startTime = Carbon::now();
 
         $featureRequest = text(
-            "Please enter your feature request title:",
-            required: true
-        );
-        $story = textarea(
-            label: "Description",
+            "Enter a short title for your feature request:",
             required: true,
-            placeholder: "Describe the feature you want added to the application. Be as specific as possible, including any specific functionality or behavior you expect.",
-            hint: 'Example: "I want a new button on the dashboard that automatically generates a report of all transactions made in the last month."'
+            hint: 'Example: "Monthly Transactions Report Button"'
+        );
+
+        $story = textarea(
+            label: "Feature Description",
+            required: true,
+            placeholder: "Describe the feature with details about the functionality or behavior you expect.",
+            hint: 'Be specific. For instance, explain what the new button should do, where it should be located, and what the report should include.'
         );
 
         $initialPrompt =
@@ -44,7 +46,7 @@ class GherkinizeCommand extends Command
         $initialResponse = spin(
             fn() => $this->gptClient->chat([
                 ["role" => "system", "content" => $initialPrompt],
-                ["role" => "user", "content" => $story],
+                ["role" => "user", "content" => $featureRequest, $story],
             ]),
             "Generating initial breakdown..."
         );
@@ -66,7 +68,7 @@ class GherkinizeCommand extends Command
             $this->info($latestSystemMessage);
 
             $userResponse = $this->ask(
-                'Please provide any additional details or clarify your previous input. Type "COMPLETE" to finish, or continue detailing your feature request:'
+                'Add more details or clarify your input. Type "COMPLETE" to finish or provide more details about your feature request:'
             );
 
             if (trim($userResponse) === "COMPLETE") {
