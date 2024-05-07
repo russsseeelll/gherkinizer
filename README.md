@@ -8,10 +8,10 @@ To run this script, ensure that PHP and Composer are installed on your machine a
 
 1. **Clone the Repository:**
 
-    ```
+```
 git clone https://github.com/russsseeelll/gherkinizer.git
 cd gherkinizer
-    ```
+```
 
 2. **Install Dependencies:**
 
