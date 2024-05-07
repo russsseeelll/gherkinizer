@@ -17,16 +17,16 @@ cd gherkinizer
 
 This application requires several PHP libraries which can be installed using Composer.
 
-    ```
+```
 composer install
-    ```
+```
 3. **Environment Setup:**
 
 Copy the example environment file and open the .env file to add your AI provider's API key.
 
-    ```
+```
 cp .env.example .env
-    ```
+```
 
 ## Configuration
 
@@ -38,9 +38,9 @@ To use this script:
 
 1. **Run the Script:**
 
-    ```
+```
 php artisan app:gherkinize
-    ```
+```
 
 2. **Enter a Feature Request:**
 
