@@ -7,6 +7,7 @@ use App\Services\GPTClient;
 use function Laravel\Prompts\text;
 use function Laravel\Prompts\textarea;
 use function Laravel\Prompts\spin;
+use function Laravel\Prompts\select;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
@@ -27,9 +28,10 @@ class GherkinizeCommand extends Command
         $this->info("Welcome to the Gherkin User Story Generator.");
         $startTime = Carbon::now();
 
-        list($featureRequest, $story) = $this->promptFeatureDetails();
+        list($system, $featureRequest, $story) = $this->promptFeatureDetails();
 
-        $conversation = $this->initiateConversation($featureRequest, $story);
+        // Ensure all three arguments are passed correctly
+        $conversation = $this->initiateConversation($featureRequest, $story, $system);
 
         if (!$conversation) {
             $this->error("Failed to connect to the AI API.");
@@ -41,12 +43,23 @@ class GherkinizeCommand extends Command
         if ($this->generateAndSaveUserStories($conversation)) {
             $endTime = Carbon::now();
             $totalDuration = $endTime->diffInSeconds($startTime);
-            $this->info("User Stories Generation Completed in {$totalDuration} seconds.");
+            $this->info(
+                "User Stories Generation Completed in {$totalDuration} seconds."
+            );
         }
     }
 
     private function promptFeatureDetails(): array
     {
+
+        $systems = json_decode(file_get_contents(public_path('systems.json')), true);
+
+        $system = select(
+            label: 'If applicable, select the system you want a feature added to:',
+            options: array_keys($systems),
+            hint: 'Choose the system relevant to your feature request.'
+        );
+
         $featureRequest = text(
             "Enter a short title for your feature request:",
             required: true,
@@ -57,14 +70,19 @@ class GherkinizeCommand extends Command
             label: "Feature Description",
             required: true,
             placeholder: "Describe the feature with details about the functionality or behavior you expect.",
-            hint: 'Be specific. For instance, explain what the new button should do, where it should be located, and what the report should include.'
+            hint: "Be specific. For instance, explain what the new button should do, where it should be located, and what the report should include."
         );
 
-        return [$featureRequest, $story];
+
+        return [$system, $featureRequest, $story];
     }
 
-    private function initiateConversation(string $featureRequest, string $story): array
-    {
+    private function initiateConversation(
+        string $featureRequest,
+        string $story,
+        string $system
+
+    ): array {
         $initialPrompt = "You are an AI assistant who is an expert at breaking down a non-IT users natural language feature requests for software applications and figuring out the individual parts of the request.
         You spend time thinking of both the 'happy path' features required and also edge-cases and error conditions which the user probably doesn't think about.
         The goal is to provide a detailed breakdown of the feature request so that it can then be turned into User Stories.
@@ -72,12 +90,19 @@ class GherkinizeCommand extends Command
         $initialResponse = spin(
             fn() => $this->gptClient->chat([
                 ["role" => "system", "content" => $initialPrompt],
-                ["role" => "user", "content" => $featureRequest, $story],
+                ["role" => "user", "content" => "System: $system\nTitle: $featureRequest\nDescription: $story"],
             ]),
             "Generating initial breakdown..."
         );
 
-        return $initialResponse ? [["role" => "system", "content" => $initialResponse["choices"][0]["message"]["content"]]] : [];
+        return $initialResponse
+            ? [
+                [
+                    "role" => "system",
+                    "content" => $initialResponse["choices"][0]["message"]["content"],
+                ],
+            ]
+            : [];
     }
 
     private function conductConversation(array $conversation): array
@@ -111,11 +136,14 @@ class GherkinizeCommand extends Command
             );
 
             if (!$nextQuestionResponse) {
-                $this->error("Failed to get further clarification from the AI API.");
+                $this->error(
+                    "Failed to get further clarification from the AI API."
+                );
                 return $conversation;
             }
 
-            $nextQuestion = $nextQuestionResponse["choices"][0]["message"]["content"];
+            $nextQuestion =
+                $nextQuestionResponse["choices"][0]["message"]["content"];
             $conversation[] = ["role" => "system", "content" => $nextQuestion];
         }
         return $conversation;
@@ -127,7 +155,10 @@ class GherkinizeCommand extends Command
     Your task is to analyze the provided conversation, extract the essential feature request, and translate it into a structured series of Gherkin Syntax User Stories.
     Ensure that these user stories are in correct Gherkin format and address all potential edge cases and error conditions that might not be evident from the user's initial request.
     Output each user story in Markdown format using Gherkin Syntax. No additional explanations are required, as the output will be used directly in another software tool.";
-        $details = array_map(fn($message) => "{$message["role"]}: {$message["content"]}", $conversation);
+        $details = array_map(
+            fn($message) => "{$message["role"]}: {$message["content"]}",
+            $conversation
+        );
         $detailsString = implode("\n", $details);
 
         $userStoriesResponse = spin(
@@ -143,7 +174,8 @@ class GherkinizeCommand extends Command
             return false;
         }
 
-        $outputContent = $userStoriesResponse["choices"][0]["message"]["content"] ??
+        $outputContent =
+            $userStoriesResponse["choices"][0]["message"]["content"] ??
             "Failed to extract user stories from the response.";
 
         if (strpos($outputContent, "Failed to extract") !== false) {
@@ -151,11 +183,11 @@ class GherkinizeCommand extends Command
             return false;
         }
 
-        $filename = "user_stories_" . Carbon::now()->format("Y_m_d_H_i_s") . ".md";
+        $filename =
+            "user_stories_" . Carbon::now()->format("Y_m_d_H_i_s") . ".md";
         $output = "# User Stories\n\n" . $outputContent;
         Storage::disk("local")->put($filename, $output);
         $this->info("User stories have been saved to {$filename}");
-
 
         $this->line($output);
 
