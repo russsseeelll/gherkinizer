@@ -1,0 +1,27 @@
+{
+    "Epic Website": {
+        "description": "A dynamic website dedicated to showcasing user projects that are considered epic in nature. Users can create profiles, upload project details, and receive feedback from viewers.",
+        "stack": "Developed using Laravel, a PHP framework, with MySQL as the database backend. It is hosted on an Apache server, ensuring reliable performance and compatibility with a wide range of PHP modules and configurations.",
+        "features": [
+            "User authentication and profile management",
+            "Project submission with multimedia support",
+            "Comment and rating system for community interaction",
+            "Search functionality with filters based on project types and popularity"
+        ]
+    },
+    "Main Company Website": {
+        "description": "The primary website for the company, serving as the first point of contact for clients and stakeholders. This site provides comprehensive information about the company's services, mission, and the team.",
+        "stack": "Built on a modern JavaScript framework for a seamless user experience, backed by a NoSQL database for scalability and performance. Runs on a cloud-based server architecture for enhanced accessibility and reliability.",
+        "features": [
+            "Dynamic content management system for easy updates",
+            "Integrated blog and news section",
+            "Client portal for project tracking and communications",
+            "Contact forms and live chat for immediate customer support"
+        ]
+    },
+    "None": {
+        "description": "No specific system is selected. This option can be used for general inquiries or when the feature request is not related to a particular software system.",
+        "stack": "",
+        "features": []
+    }
+}

@@ -1,6 +1,0 @@
-{
-    "LTC": "A web app capable of uploading student records, view from an SQL db etc.....",
-    "Rough Costing Tool":"A tool designed for academic staff so that they can get the total cost of their research projects before filling out the funding paper work. This is a web app, written using laravel. It scrapes various bits of data from the internet using python.",
-    "ExamDB":"",
-    "None":""
-}

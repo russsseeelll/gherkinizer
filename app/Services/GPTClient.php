@@ -24,8 +24,6 @@ class GPTClient
             'messages' => $inputs,
         ]);
 
-        \Log::info('API Response: ', $response->json());
-
         return $response->json();
     }
 }

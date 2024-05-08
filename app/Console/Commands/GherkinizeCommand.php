@@ -30,8 +30,11 @@ class GherkinizeCommand extends Command
 
         list($system, $featureRequest, $story) = $this->promptFeatureDetails();
 
-        // Ensure all three arguments are passed correctly
-        $conversation = $this->initiateConversation($featureRequest, $story, $system);
+        $conversation = $this->initiateConversation(
+            $featureRequest,
+            $story,
+            $system
+        );
 
         if (!$conversation) {
             $this->error("Failed to connect to the AI API.");
@@ -51,13 +54,15 @@ class GherkinizeCommand extends Command
 
     private function promptFeatureDetails(): array
     {
-
-        $systems = json_decode(file_get_contents(public_path('systems.json')), true);
+        $systems = json_decode(
+            file_get_contents(public_path("systems.json")),
+            true
+        );
 
         $system = select(
-            label: 'If applicable, select the system you want a feature added to:',
+            label: "If applicable, select the system you want a feature added to:",
             options: array_keys($systems),
-            hint: 'Choose the system relevant to your feature request.'
+            hint: "Choose the system relevant to your feature request."
         );
 
         $featureRequest = text(
@@ -73,7 +78,6 @@ class GherkinizeCommand extends Command
             hint: "Be specific. For instance, explain what the new button should do, where it should be located, and what the report should include."
         );
 
-
         return [$system, $featureRequest, $story];
     }
 
@@ -81,7 +85,6 @@ class GherkinizeCommand extends Command
         string $featureRequest,
         string $story,
         string $system
-
     ): array {
         $initialPrompt = "You are an AI assistant who is an expert at breaking down a non-IT users natural language feature requests for software applications and figuring out the individual parts of the request.
         You spend time thinking of both the 'happy path' features required and also edge-cases and error conditions which the user probably doesn't think about.
@@ -90,7 +93,10 @@ class GherkinizeCommand extends Command
         $initialResponse = spin(
             fn() => $this->gptClient->chat([
                 ["role" => "system", "content" => $initialPrompt],
-                ["role" => "user", "content" => "System: $system\nTitle: $featureRequest\nDescription: $story"],
+                [
+                    "role" => "user",
+                    "content" => "System: $system\nTitle: $featureRequest\nDescription: $story",
+                ],
             ]),
             "Generating initial breakdown..."
         );
@@ -99,7 +105,8 @@ class GherkinizeCommand extends Command
             ? [
                 [
                     "role" => "system",
-                    "content" => $initialResponse["choices"][0]["message"]["content"],
+                    "content" =>
+                        $initialResponse["choices"][0]["message"]["content"],
                 ],
             ]
             : [];
