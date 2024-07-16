@@ -7,11 +7,14 @@ use Illuminate\Support\Facades\Http;
 class GPTClient
 {
     protected $apiKey;
-    protected $baseUrl = 'https://api.openai.com/v1';
+    protected $baseUrl;
+    protected $model;
 
     public function __construct()
     {
-        $this->apiKey = config('services.gpt.api_key');
+        $this->apiKey = config('gherkinconf.gpt.api_key');
+        $this->baseUrl = config('gherkinconf.gpt.base_url');
+        $this->model = config('gherkinconf.gpt.model');
     }
 
     public function chat($inputs)
@@ -20,7 +23,7 @@ class GPTClient
             'Authorization' => 'Bearer ' . $this->apiKey,
             'Content-Type' => 'application/json',
         ])->post("{$this->baseUrl}/chat/completions", [
-            'model' => 'gpt-3.5-turbo',
+            'model' => $this->model,
             'messages' => $inputs,
         ]);
 
