@@ -1,6 +1,7 @@
 # Gherkin-Style User Story Generator (PHP/Laravel Edition)
 
-This Laravel command line application helps in converting non-technical user feature requests into detailed Gherkin-style user stories. It uses the openAI GPT model to break down natural language feature requests into structured user stories in Gherkin syntax.
+This Laravel web app helps in converting non-technical user feature requests into detailed Gherkin-style user stories. It uses the openAI GPT model to break down natural language feature requests into structured user stories in Gherkin syntax.
+
 
 ## Installation
 
@@ -22,36 +23,27 @@ composer install
 ```
 3. **Environment Setup:**
 
-Copy the example environment file and open the .env file to add your GPT API key. Then copy the systems.json file and edit it to match your own companies systems.
+Copy the example environment file and open the .env file to add your GPT API key. 
 
 ```
 cp .env.example .env
-cd public
-cp systems.json.example systems.json
+```
+
+Migrate the database:
+
+```
+php artisan migrate:fresh                                  
+php artisan db:seed --class=PromptSeeder
+php artisan db:seed --class=SystemInfoSeeder
 ```
 
 
 ## Configuration
 
-Before running the command, ensure the AI chatbot model is set correctly in your service provider configuration. Ensure the API key is set in the Env if required.
+Before running the app, ensure the AI chatbot model is set correctly in your service provider configuration. Ensure the API key is set in the Env if required.
 
-## Usage
+Add your own companies SystemInfo to the database / seeder for more accurate results.
 
-To use this script:
-
-1. **Run the Command:**
-
-```
-php artisan app:gherkinize
-```
-
-2. **Enter a Feature Request:**
-
-When prompted, enter the non-IT user feature request. The script will then output the initial thoughts and the Gherkin-style user stories.
-
-3. **User Stories Output:**
-
-The generated user stories will be displayed in the console and saved to a markdown file named with the current date and time (e.g., user_stories_2024_01_01_12_00_00.md).
 
 ## Features
 
