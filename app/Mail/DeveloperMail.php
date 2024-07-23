@@ -22,7 +22,7 @@ class DeveloperMail extends Mailable
     public function build()
     {
         return $this->view('emails.developer')
-            ->subject('Generated User Stories and Functional Requirements')
+            ->subject('Generated User Stories and Suggested Functional Requirements')
             ->with([
                 'functionalRequirements' => $this->functionalRequirements,
                 'userStories' => $this->userStories,
