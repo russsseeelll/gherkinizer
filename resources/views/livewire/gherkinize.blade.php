@@ -11,6 +11,9 @@
                 <div class="markdown mt-4 bg-gray-50 p-4 rounded-lg text-gray-800 overflow-x-auto shadow-inner" x-html="functionalRequirements"></div>
                 <div class="markdown mt-4 bg-gray-50 p-4 rounded-lg text-gray-800 overflow-x-auto shadow-inner" x-html="userStories"></div>
                 <a :href="downloadLink" class="mt-4 inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg focus:outline-none focus:shadow-outline transition duration-300" download>Download</a>
+                <button x-on:click.prevent="$wire.emailToDeveloper()" class="mt-4 inline-block bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg focus:outline-none focus:shadow-outline transition duration-300">
+                    Email to Developer
+                </button>
             </div>
         </template>
     </div>

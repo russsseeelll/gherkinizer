@@ -253,4 +253,12 @@ class Gherkinize extends Component
         $parsedown = new Parsedown();
         return $parsedown->text($markdown);
     }
+
+    // method to send email to developer
+    public function emailToDeveloper()
+    {
+        Mail::to('russell.mcinnes@glasgow.ac.uk')->send(new DeveloperMail($this->functionalRequirements, $this->userStories));
+
+        $this->dispatchBrowserEvent('notify', ['message' => 'Email sent to developer successfully.']);
+    }
 }
