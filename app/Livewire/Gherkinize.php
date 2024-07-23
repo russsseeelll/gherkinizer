@@ -10,6 +10,8 @@ use App\Jobs\ProcessGherkinRequest;
 use Carbon\Carbon;
 use Parsedown;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\DeveloperMail;
 
 class Gherkinize extends Component
 {
