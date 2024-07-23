@@ -1,6 +1,13 @@
 <div x-data="{ loading: false, submitLoading: false, completeLoading: false, completed: @entangle('completed'), functionalRequirements: @entangle('functionalRequirements'), userStories: @entangle('userStories') }">
     <h1 class="text-4xl font-extrabold mb-8 text-center">Gherkin User Story Generator</h1>
 
+    @if(session()->has('success'))
+        <div class="bg-green-100 border border-green-400 text-green-800 px-6 py-4 rounded-lg relative shadow-md mb-8" role="alert">
+            <strong class="font-bold text-lg">Success!</strong>
+            <span class="block sm:inline mt-2">{{ session('success') }}</span>
+        </div>
+    @endif
+
     <div id="loading-bar" class="loading-bar" x-show="loading"></div>
 
     <div x-data="{ completed: @entangle('completed'), functionalRequirements: @entangle('functionalRequirements'), userStories: @entangle('userStories'), downloadLink: @entangle('downloadLink') }">
