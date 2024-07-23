@@ -110,13 +110,14 @@
             <h2 class="text-2xl font-bold mb-4">How to Use Gherkin User Story Generator</h2>
             <p class="mb-4">Follow these steps to generate your user stories:</p>
             <ul class="list-disc list-inside mb-4">
-                <li>Think of a feature that you want added to a system. Something that would make the system easier to use, or something that will make your life easier.</li>
+                <li>Think of a feature that you want added to a system. Something that would make the system more efficient, or something that will make your life easier.</li>
                 <li>Select an existing system from the dropdown.</li>
                 <li>Enter a title for your feature request.</li>
                 <li>Provide a detailed description of your feature request.</li>
                 <li>Click the "Submit" button to submit your request.</li>
                 <li>Follow the conversation prompts and provide necessary responses.</li>
                 <li>Once you think the AI has a good grasp of your request, click the "Complete" button to finalize the process.</li>
+                <li>Send the requirments / stories to the developer who can look in to actioning your request.</li>
             </ul>
             <button @click="helpModalOpen = false" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
                 Close
