@@ -261,6 +261,6 @@ class Gherkinize extends Component
     {
         Mail::to('russell.mcinnes@glasgow.ac.uk')->send(new DeveloperMail($this->functionalRequirements, $this->userStories));
 
-        $this->dispatchBrowserEvent('notify', ['message' => 'Email sent to developer successfully.']);
+        $this->emit('notify', ['message' => 'Email sent to developer successfully.']);
     }
 }
