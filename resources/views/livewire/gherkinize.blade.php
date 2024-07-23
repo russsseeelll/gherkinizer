@@ -1,5 +1,6 @@
-<div x-data="{ loading: false, submitLoading: false, completeLoading: false, completed: @entangle('completed'), functionalRequirements: @entangle('functionalRequirements'), userStories: @entangle('userStories') }">
-    <h1 class="text-4xl font-extrabold mb-8 text-center">Gherkin User Story Generator</h1>
+<div x-data="{ loading: false, submitLoading: false, completeLoading: false, completed: @entangle('completed'), functionalRequirements: @entangle('functionalRequirements'), userStories: @entangle('userStories'), helpModalOpen: false }">
+    <h1 class="text-4xl font-extrabold mb-8 text-center">Gherkin User Story Generator  <i @click="helpModalOpen = true" class="fas fa-question-circle text-blue-500 hover:text-blue-700 cursor-pointer text-3xl"></i>
+    </h1>
 
     @if(session()->has('success'))
         <div class="bg-green-100 border border-green-400 text-green-800 px-6 py-4 rounded-lg relative shadow-md mb-8" role="alert">
@@ -30,7 +31,7 @@
             <template x-if="!$wire.inputId">
                 <div>
                     <div class="mb-6">
-                        <label for="system" class="block text-gray-600 text-sm font-bold mb-2">System</label>
+                        <label for="system" class="block text-gray-600 text-sm font-bold mb-2">Existing System</label>
                         <select wire:model="system" id="system" class="shadow appearance-none border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" :disabled="loading || submitLoading || completeLoading">
                             <option value="">Select a system</option>
                             @foreach ($systems as $sys)
@@ -41,13 +42,13 @@
                     </div>
 
                     <div class="mb-6">
-                        <label for="title" class="block text-gray-600 text-sm font-bold mb-2">Title</label>
+                        <label for="title" class="block text-gray-600 text-sm font-bold mb-2">Title of your feature Request</label>
                         <input type="text" wire:model="title" id="title" class="shadow appearance-none border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" :disabled="loading || submitLoading || completeLoading">
                         @error('title') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="mb-6">
-                        <label for="description" class="block text-gray-600 text-sm font-bold mb-2">Description</label>
+                        <label for="description" class="block text-gray-600 text-sm font-bold mb-2">Description of Feature Request</label>
                         <textarea wire:model="description" id="description" class="shadow appearance-none border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" :disabled="loading || submitLoading || completeLoading"></textarea>
                         @error('description') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
@@ -102,4 +103,24 @@
             </template>
         </form>
     </template>
+
+    <!-- Help Modal -->
+    <div x-show="helpModalOpen" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
+            <h2 class="text-2xl font-bold mb-4">How to Use Gherkin User Story Generator</h2>
+            <p class="mb-4">Follow these steps to generate your user stories:</p>
+            <ul class="list-disc list-inside mb-4">
+                <li>Think of a feature that you want added to a system. Something that would make the system easier to use, or something that will make your life easier.</li>
+                <li>Select an existing system from the dropdown.</li>
+                <li>Enter a title for your feature request.</li>
+                <li>Provide a detailed description of your feature request.</li>
+                <li>Click the "Submit" button to submit your request.</li>
+                <li>Follow the conversation prompts and provide necessary responses.</li>
+                <li>Once you think the AI has a good grasp of your request, click the "Complete" button to finalize the process.</li>
+            </ul>
+            <button @click="helpModalOpen = false" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+                Close
+            </button>
+        </div>
+    </div>
 </div>
