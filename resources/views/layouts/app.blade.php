@@ -72,7 +72,7 @@
 <script>
     document.addEventListener('livewire:load', function () {
         Livewire.on('notify', message => {
-            alert(message.message);
+            alert(message);
         });
     });
 
@@ -90,7 +90,5 @@
         });
     });
 </script>
-
-
 </body>
 </html>

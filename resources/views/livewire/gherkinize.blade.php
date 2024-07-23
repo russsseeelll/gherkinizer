@@ -18,7 +18,6 @@
         </template>
     </div>
 
-
     <template x-if="!completed">
         <form x-on:submit.prevent="submitLoading = true; loading = true; setTimeout(() => { document.getElementById('loading-bar').classList.add('loading'); }, 50); $wire.submit().then(() => { submitLoading = false; loading = false; document.getElementById('loading-bar').classList.remove('loading'); })" class="mb-8">
             <template x-if="!$wire.inputId">
@@ -97,5 +96,3 @@
         </form>
     </template>
 </div>
-
-

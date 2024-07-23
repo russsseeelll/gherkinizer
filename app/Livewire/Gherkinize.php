@@ -259,8 +259,10 @@ class Gherkinize extends Component
     // method to send email to developer
     public function emailToDeveloper()
     {
-        Mail::to('developer@example.com')->send(new DeveloperMail($this->functionalRequirements, $this->userStories));
+        Log::info('Email to developer method called.');
 
-        $this->dispatch('notify', ['message' => 'Email sent to developer successfully.']);
+        Mail::to('russell.mcinnes@glasgow.ac.uk')->send(new DeveloperMail($this->functionalRequirements, $this->userStories));
+
+        $this->dispatch('notify', 'Email sent to developer successfully.');
     }
 }
