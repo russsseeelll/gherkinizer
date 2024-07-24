@@ -91,7 +91,7 @@
                         </div>
 
                         <button type="submit" class="bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline transition duration-300" :disabled="loading || submitLoading || completeLoading">
-                            Submit
+                            Continue Conversation
                             <div class="spinner" x-show="submitLoading"></div>
                         </button>
                         <button x-on:click.prevent="completeLoading = true; loading = true; setTimeout(() => { document.getElementById('loading-bar').classList.add('loading'); }, 50); $wire.complete().then(() => { completeLoading = false; loading = false; document.getElementById('loading-bar').classList.remove('loading'); })" class="bg-green-300 hover:bg-green-400 text-gray-800 font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline transition duration-300" :disabled="loading || submitLoading || completeLoading">
@@ -114,7 +114,7 @@
                 <li>Select an existing system from the dropdown.</li>
                 <li>Enter a title for your feature request.</li>
                 <li>Provide a detailed description of your feature request.</li>
-                <li>Click the "Submit" button to submit your request.</li>
+                <li>Click the "Continue Conversation" button to submit your request.</li>
                 <li>Follow the conversation prompts and provide necessary responses.</li>
                 <li>Once you think the AI has a good grasp of your request, click the "Complete" button to finalize the process.</li>
                 <li>Send the requirments / stories to the developer who can look in to actioning your request.</li>
